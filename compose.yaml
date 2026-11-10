@@ -1,0 +1,29 @@
+
+services:
+  api:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+        DATABASE_URL: postgres://infrapilot:devpassword@db:5432/infrapilot?sslmode=disable
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: infrapilot
+      POSTGRES_PASSWORD: devpassword
+      POSTGRES_DB: infrapilot
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U infrapilot -d infrapilot"]
+      interval: 5s
+      retries: 5
+
+volumes:
+  postgres_data:

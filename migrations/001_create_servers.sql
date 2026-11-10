@@ -1,0 +1,9 @@
+CREATE TABLE IF NOT EXISTS servers (
+    id BIGSERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL UNIQUE,
+    address VARCHAR(255) NOT NULL,
+    environment VARCHAR(30) NOT NULL DEFAULT 'development',
+    status VARCHAR(20) NOT NULL DEFAULT 'unknown',
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
